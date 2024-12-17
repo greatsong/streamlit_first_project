@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import koreanize_matplotlib
 
 # Load data
 data_path = 'age2411.csv'
