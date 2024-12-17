@@ -23,7 +23,17 @@ def main():
     age_data = region_data[age_columns].T
     age_data.columns = ['인구 수']
     age_data = age_data.iloc[1:]  # 첫 번째 행 제외
-    age_data.index = [int(col.split('_')[1][:-1]) for col in age_data.index]
+
+    # 인덱스에서 나이를 안전하게 추출
+    def extract_age(col):
+        try:
+            return int(col.split('_')[1][:-1])
+        except (IndexError, ValueError):
+            return None
+    
+    age_data['나이'] = [extract_age(col) for col in age_data.index]
+    age_data = age_data.dropna(subset=['나이'])
+    age_data = age_data.set_index('나이')
 
     # 그래프 그리기
     st.subheader(f"{selected_region}의 인구 구조")
